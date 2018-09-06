@@ -2,6 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse, reverse_lazy
 from django.views import generic
+from django.forms import ModelChoiceField
 
 from .models import Distributor, Order, Product
 from .forms import OrderForm, ProductForm
@@ -83,6 +84,16 @@ class OrdersCreate(generic.CreateView):
     form_class = OrderForm
     success_url = reverse_lazy('store:list_orders')
     template_name = 'orders/create.html'
+
+    def get_form(self, *args, **kwargs):
+        if 'product' in self.request.GET:
+            product = self.request.GET['product']
+            form = OrderForm({'product': product})
+            return form
+            # form.fields['product'] = ModelChoiceField(queryset=Product.objects.all(), initial=product)
+            # form.fields['distributor'] = ModelChoiceField(queryset=Distributor.objects.filter(product=Product))
+
+        return OrderForm()
 
 
 class OrdersDetail(generic.DetailView):

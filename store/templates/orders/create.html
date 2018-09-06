@@ -36,8 +36,13 @@
 </form>
 {% endblock %}
 
+{% block js %}
 <script type="text/javascript">
   $(function() {
-    $('select#id_product').on('change', function() { var product = $(this). });
+    $('select#id_product').on('change', function() {
+      var product = $(this).val();
+      window.location.href = "?product=" + product;
+    });
   });
 </script>
+{% endblock %}

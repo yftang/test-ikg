@@ -1,6 +1,6 @@
-from django.forms import ChoiceField, Textarea, ModelForm
+from django.forms import ChoiceField, Textarea, ModelForm, ModelChoiceField
 
-from .models import Order, Product
+from store.models import Order, Product, Distributor
 
 
 class ProductForm(ModelForm):
@@ -26,9 +26,16 @@ class OrderForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        if 'product' in kwargs:
-            product = kwargs.pop('product')
-            self.fields['distributor'] = ModelChoiceField(queryset=Distributor.objects.filter(product=product))
+        if len(args) > 0 and 'product' in args[0]:
+            product = args[0]['product']
+            print('Product: %s' % product)
+            self.fields['product'] = ModelChoiceField(
+                queryset=Product.objects.all(),
+                initial=product,
+            )
+            self.fields['distributor'] = ModelChoiceField(
+                queryset=Distributor.objects.filter(product=product),
+            )
         self.fields['note'].widget = Textarea({'rows': 3})
         for field_name in self.fields:
             self.fields[field_name].widget.attrs.update({'class': 'form-control'})
