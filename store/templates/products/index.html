@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}产品列表{% endblock %}
+
+{% block content %}
+<h1>产品列表 ({{ all_products|length }})</h1>
+
+<ul>
+{% for product in all_products %}
+  <li>
+    <a href="{% url 'store:view_product' product.slug %}">{{ product.name }}</a>
+    &nbsp;
+    <a href="{% url 'store:update_product' product.slug %}">更改</a>
+    &nbsp;
+    <form action="{% url 'store:delete_product' product.slug %}" method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-link">删除</button>
+    </form>
+  </li>
+{% endfor %}
+</ul>
+
+<a href="{% url 'store:create_product' %}">新建</a>
+{% endblock %}

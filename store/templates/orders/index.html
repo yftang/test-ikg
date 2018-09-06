@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}订单列表{% endblock %}
+
+{% block content %}
+<h1>订单列表 ({{ all_orders|length }})</h1>
+
+<ul>
+{% for order in all_orders %}
+  <li>
+    <a href="{% url 'store:view_order' order.id %}">订单号：{{ order.id }}</a>
+    &nbsp;
+    <a href="{% url 'store:update_order' order.slug %}">更改</a>
+    &nbsp;
+    <form action="{% url 'store:delete_order' order.id %}" method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-link">删除</button>
+    </form>
+  </li>
+{% endfor %}
+</ul>
+
+<a href="{% url 'store:create_order' %}">新建</a>
+{% endblock %}

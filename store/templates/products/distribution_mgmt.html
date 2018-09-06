@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Product ({{ product.slug }}) distribution mgmt{% endblock %}
+
+{% block content %}
+<strong>已关联分销商：</strong>
+{% for d in related_distributors %}
+<form action="{% url 'store:toggle_product_distributor' product.slug d.slug %}" method="post">
+  {% csrf_token %}
+  <input type="checkbox" name="distributor" id="distributor-{{ d.slug }}" value="{{ d.slug }}" onchange="this.form.submit()" checked />
+  <label for="distributor-{{ d.slug }}">{{ d.slug }}</label>
+  <br />
+</form>
+{% endfor %}
+
+<strong>未关联分销商：</strong>
+{% for d in unrelated_distributors %}
+<form action="{% url 'store:toggle_product_distributor' product.slug d.slug %}" method="post">
+  {% csrf_token %}
+  <input type="checkbox" name="distributor" id="distributor-{{ d.slug }}" value="{{ d.slug }}"  onchange="this.form.submit()" />
+  <label for="distributor-{{ d.slug }}">{{ d.slug }}</label>
+  <br />
+</form>
+{% endfor %}
+
+<br>
+<br>
+
+<a href="{% url 'store:view_product' product.slug %}">返回产品页</a>
+{% endblock %}

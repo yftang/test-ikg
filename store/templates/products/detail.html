@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Product ({{ product.slug }}){% endblock %}
+
+{% block content %}
+<h1>{{ product.name }}</h1>
+
+<ul>
+{% for d in product.distributors.all %}
+  <li>{{ d.slug }} - {{ d.name }}</li>
+{% endfor %}
+</ul>
+
+<a href="{% url 'store:mgmt_product_distributions' product.slug %}">分销商管理</a>
+{% endblock %}

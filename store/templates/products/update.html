@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}产品信息更改{% endblock %}
+
+{% block content %}
+<h1>产品信息更改</h1>
+<br>
+
+<form action="{% url 'store:update_product' form.instance.slug %}" method="post">
+  {% csrf_token %}
+
+  {% if form.errors %}
+  <div class="alert alert-danger" role="alert">
+    <ul>
+      {% for field, errors in form.errors.items %}
+        <li>
+          {{ field }}: {{ errors|join:", " }}
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  {% for field in form %}
+  <div class="form-group row">
+    <label class="col-lg-4 control-label">{{ field.label }}</label>
+    <div class="col-lg-8">
+      {{ field }}
+    </div>
+  </div>
+  {% endfor %}
+
+  <div class="form-group">
+    <button type="submit" class="btn btn-primary">提交</button>
+  </div>
+</form>
+{% endblock %}
