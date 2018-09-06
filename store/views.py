@@ -57,7 +57,7 @@ class ProductsToggleDistributor(generic.RedirectView):
         else:
             p.distributors.add(d)
 
-        return super(ProductsToggleDistributorView, self).post(*args, **kwargs)
+        return super(ProductsToggleDistributor, self).post(*args, **kwargs)
 
 
 class ProductsUpdate(generic.UpdateView):
@@ -88,10 +88,8 @@ class OrdersCreate(generic.CreateView):
     def get_form(self, *args, **kwargs):
         if 'product' in self.request.GET:
             product = self.request.GET['product']
-            form = OrderForm({'product': product})
+            form = OrderForm(product=product)
             return form
-            # form.fields['product'] = ModelChoiceField(queryset=Product.objects.all(), initial=product)
-            # form.fields['distributor'] = ModelChoiceField(queryset=Distributor.objects.filter(product=Product))
 
         return OrderForm()
 
